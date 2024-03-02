@@ -14,6 +14,7 @@ com/unlp/pdtr/app/DatabaseServiceGrpc$DatabaseServiceMethodDescriptorSupplier.cl
 com/unlp/pdtr/app/WebSocketServiceOuterClass$WebSocketRequest.class
 com/unlp/pdtr/app/WebSocketServiceGrpc$MethodHandlers.class
 com/unlp/pdtr/app/WebSocketServiceGrpc$WebSocketServiceFutureStub.class
+com/unlp/pdtr/app/UserServiceImpl$1$1.class
 com/unlp/pdtr/app/DatabaseServiceGrpc.class
 com/unlp/pdtr/app/WebSocketServiceOuterClass.class
 com/unlp/pdtr/app/DatabaseServiceOuterClass$DBResponseOrBuilder.class
@@ -35,6 +36,7 @@ com/unlp/pdtr/app/WebSocketServiceGrpc$WebSocketServiceImplBase.class
 com/unlp/pdtr/app/WebSocketServiceImpl.class
 com/unlp/pdtr/app/WebSocketServiceOuterClass$WebSocketResponse$1.class
 com/unlp/pdtr/app/DatabaseServiceOuterClass$DBResponse$Builder.class
+com/unlp/pdtr/app/UserServiceImpl$1$2.class
 com/unlp/pdtr/app/WebSocketServiceGrpc$WebSocketServiceBaseDescriptorSupplier.class
 com/unlp/pdtr/app/DatabaseServiceGrpc$DatabaseServiceStub.class
 com/unlp/pdtr/app/UserServiceOuterClass.class

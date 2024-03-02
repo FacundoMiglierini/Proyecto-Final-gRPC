@@ -9,8 +9,8 @@ public class App
     {
         Server server = ServerBuilder.forPort(8080)
                 .addService(new UserServiceImpl())
-                //.addService(new DatabaseServiceImpl())
-                //.addService(new WebSocketServiceImpl())
+                .addService(new DatabaseServiceImpl())
+                .addService(new WebSocketServiceImpl())
                 .build();
         
         server.start();

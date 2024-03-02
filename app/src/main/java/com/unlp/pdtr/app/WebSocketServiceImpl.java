@@ -15,6 +15,8 @@ public class WebSocketServiceImpl extends WebSocketServiceImplBase
         return new StreamObserver<WebSocketRequest>() {
             @Override
             public void onNext(WebSocketRequest request) {
+                //TODO show in webpage
+                System.out.println("Llega a WebSocket");
                 System.out.println(request.toString());
             }
 

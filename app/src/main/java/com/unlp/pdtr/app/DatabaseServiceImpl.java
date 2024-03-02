@@ -15,6 +15,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
             @Override
             public void onNext(DBRequest request) {
                 //TODO store in DB
+                System.out.println("Llega a DB");
                 System.out.println(request.toString());
             }
 
@@ -35,6 +36,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
 
                 DBResponse response = DBResponse.newBuilder().setTime(time).build();
                 responseObserver.onNext(response);
+                responseObserver.onCompleted();
                 System.out.println("STORE IN DB OPERATION FINISHED");
             }
         };

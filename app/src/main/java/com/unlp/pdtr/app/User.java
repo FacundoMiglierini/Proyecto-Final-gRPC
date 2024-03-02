@@ -100,9 +100,9 @@ public class User {
             }
             requestObserver.onNext(request);
 
-            //Pause for 1 second
+            //Pause for 3 seconds
             try {
-                Thread.sleep(1000); 
+                Thread.sleep(3000); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

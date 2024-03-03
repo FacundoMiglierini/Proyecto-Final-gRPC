@@ -13,7 +13,7 @@
     "@mdi/font": "^7.4.47",
     "nuxt": "^3.10.3",
     "nuxt-socket-io": "^3.0.13",
-    "sockjs": "^0.3.24",
+    "socket.io": "^4.7.4",
     "tailwind": "^4.0.0",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"

@@ -1,6 +1,6 @@
 import { defineNuxtModule } from '@nuxt/kit'
 import http from 'http'
-let sockjs = require('sockjs')
+import { Server } from 'socket.io'
 
 export default defineNuxtModule({
   setup(options, nuxt) {
@@ -11,21 +11,22 @@ export default defineNuxtModule({
       //const option = {
       //  disable_cors: true,
       //}
-      const io = sockjs.createServer()
+      const io = new Server(60200, {
+        cors: {
+          origin: '*',
+        },
+      })
 
       nuxt.hook('close', () => io.close())
 
-      io.on('connection', (conn: any) => {
-        console.log('connected', conn)
-        conn.on('data', (message: any) => {
-          conn.write(message)
+      io.on('connection', (socket: any) => {
+        console.log('connected')
+        socket.on('message', (message: any) => {
+          console.log('message', message)
+          socket.write(message)
         })
-        conn.on('close', () => {})
+        socket.on('close', () => {})
       })
-      //io.installHandlers(server, { prefix: '/' })
-      const sv = http.createServer()
-      io.installHandlers(sv, { prefix: '/' })
-      sv.listen(60200)
     })
   },
 })

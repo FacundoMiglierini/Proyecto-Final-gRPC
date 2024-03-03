@@ -7,6 +7,6 @@ COPY package*.json ./
 RUN npm install
 
 EXPOSE 5000
-EXPOSE 60901
+EXPOSE 60200
 
 CMD [ "npm", "run", "dev" ]

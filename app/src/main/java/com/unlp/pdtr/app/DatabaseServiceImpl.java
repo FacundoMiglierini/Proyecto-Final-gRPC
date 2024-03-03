@@ -9,14 +9,20 @@ import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBResponse;
 
 public class DatabaseServiceImpl extends DatabaseServiceImplBase
 {
+    private static Database database;
+
+    public DatabaseServiceImpl() {
+        database = new Database();
+    }
+
     @Override
     public StreamObserver<DBRequest> storeInDatabase(StreamObserver<DBResponse> responseObserver) {
         return new StreamObserver<DBRequest>() {
             @Override
             public void onNext(DBRequest request) {
-                //TODO store in DB
+                Instant time = Instant.ofEpochSecond(request.getTime().getSeconds(), request.getTime().getNanos());
+                database.writeTrafficData(request.getRoad(), request.getRegion(), request.getComment(), time);
                 System.out.println("Llega a DB");
-                System.out.println(request.toString());
             }
 
             @Override
@@ -38,6 +44,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
                 responseObserver.onNext(response);
                 responseObserver.onCompleted();
                 System.out.println("STORE IN DB OPERATION FINISHED");
+                database.closeDatabase();
             }
         };
 

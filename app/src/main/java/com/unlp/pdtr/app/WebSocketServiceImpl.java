@@ -9,6 +9,7 @@ import com.unlp.pdtr.app.WebSocketServiceOuterClass.WebSocketResponse;
 
 public class WebSocketServiceImpl extends WebSocketServiceImplBase
 {
+
     @Override
     public StreamObserver<WebSocketRequest> showContent(final StreamObserver<WebSocketResponse> responseObserver) {
 

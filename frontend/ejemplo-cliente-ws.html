@@ -1,0 +1,9 @@
+<script type="module">
+  import { io } from 'https://cdn.socket.io/4.7.4/socket.io.esm.min.js'
+
+  const socket = io('ws://localhost:60200', {
+    transports: ['websocket'],
+    upgrade: false,
+  })
+  socket.emit('message', 'Hello World!')
+</script>

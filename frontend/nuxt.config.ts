@@ -1,4 +1,5 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import { Server } from 'socket.io'
 export default defineNuxtConfig({
   //...
   build: {
@@ -11,7 +12,6 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
-    //...
   ],
   vite: {
     vue: {
@@ -28,5 +28,13 @@ export default defineNuxtConfig({
       name: 'page',
       mode: 'out-in',
     },
+  },
+  devServer: {
+    port: 5000,
+  },
+  routeRules: {
+    '/**': {
+      cors: true,
+    }
   }
 })

@@ -9,9 +9,7 @@ import com.unlp.pdtr.app.UserServiceGrpc.UserServiceImplBase;
 import com.unlp.pdtr.app.UserServiceOuterClass.UserRequest;
 import com.unlp.pdtr.app.WebSocketServiceGrpc.WebSocketServiceStub;
 import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBRequest;
-import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBResponse;
 import com.unlp.pdtr.app.WebSocketServiceOuterClass.WebSocketRequest;
-import com.unlp.pdtr.app.WebSocketServiceOuterClass.WebSocketResponse;
 
 
 public class UserServiceImpl extends UserServiceImplBase
@@ -53,12 +51,11 @@ public class UserServiceImpl extends UserServiceImplBase
                 DBRequest databaseRequest;
                 WebSocketRequest webSocketRequest;
 
-                // Create a StreamObserver to handle the response for DB Request
-                StreamObserver<DBResponse> databaseResponseObserver = new StreamObserver<DBResponse>() {
+                // Create a StreamObserver to handle the empty response from DB Request
+                StreamObserver<Empty> databaseResponseObserver = new StreamObserver<Empty>() {
                     @Override
-                    public void onNext(DBResponse response) {
+                    public void onNext(Empty response) {
                         // Process the empty response from the server
-                        System.out.println("MESSAGE RECEIVED FROM DATABASE");
                     }
 
                     @Override
@@ -72,12 +69,10 @@ public class UserServiceImpl extends UserServiceImplBase
                     }
                 };
 
-                // Create a StreamObserver to handle the response for WebSocket Request
-                // TODO check timestamp for resending data stored in buffer
-                StreamObserver<WebSocketResponse> webSocketResponseObserver = new StreamObserver<WebSocketResponse>() {
+                // Create a StreamObserver to handle the empty response from WebSocket Request
+                StreamObserver<Empty> webSocketResponseObserver = new StreamObserver<Empty>() {
                     @Override
-                    public void onNext(WebSocketResponse response) {
-                        System.out.println("MESSAGE RECEIVED FROM WEBSOCKET");
+                    public void onNext(Empty response) {
                         // Process the empty response from the server
                     }
 
@@ -114,8 +109,6 @@ public class UserServiceImpl extends UserServiceImplBase
 
                 databaseRequestObserver.onNext(databaseRequest);
                 webSocketRequestObserver.onNext(webSocketRequest);
-                
-                System.out.println(request.toString());
             }
 
             @Override

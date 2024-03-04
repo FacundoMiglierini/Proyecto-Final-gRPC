@@ -54,7 +54,6 @@ public class UserServiceImpl extends UserServiceImplBase
                 WebSocketRequest webSocketRequest;
 
                 // Create a StreamObserver to handle the response for DB Request
-                // TODO check timestamp for resending data stored in buffer
                 StreamObserver<DBResponse> databaseResponseObserver = new StreamObserver<DBResponse>() {
                     @Override
                     public void onNext(DBResponse response) {
@@ -102,6 +101,7 @@ public class UserServiceImpl extends UserServiceImplBase
                     .setRegion(request.getRegion())
                     .setTime(request.getTime())
                     .setMeasure(request.getMeasure())
+                    .setValue(request.getValue())
                     .build();
 
                 webSocketRequest = WebSocketRequest.newBuilder()
@@ -109,13 +109,12 @@ public class UserServiceImpl extends UserServiceImplBase
                     .setRegion(request.getRegion())
                     .setTime(request.getTime())
                     .setMeasure(request.getMeasure())
+                    .setValue(request.getValue())
                     .build();
 
                 databaseRequestObserver.onNext(databaseRequest);
                 webSocketRequestObserver.onNext(webSocketRequest);
                 
-                // TODO store data into a buffer
-
                 System.out.println(request.toString());
             }
 

@@ -21,7 +21,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
             @Override
             public void onNext(DBRequest request) {
                 Instant time = Instant.ofEpochSecond(request.getTime().getSeconds(), request.getTime().getNanos());
-                database.writeTrafficData(request.getRoad(), request.getRegion(), request.getMeasure(), time);
+                database.writeData(request.getRoad(), request.getRegion(), request.getMeasure(), request.getValue(), time);
                 System.out.println("Llega a DB");
             }
 
@@ -33,7 +33,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
 
             @Override
             public void onCompleted() {
-                //TODO setear timestamp de ultima entrada cargada
+                //TODO remove it
                 Instant currentTimestamp = Instant.now();
                 Timestamp time = Timestamp.newBuilder()
                         .setSeconds(currentTimestamp.getEpochSecond())

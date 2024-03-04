@@ -39,6 +39,7 @@ public class Database {
         writeApi.writeMeasurement(WritePrecision.MS, data);
     }
 
+    //Unused
     public List<TrafficData> getTrafficDataFromRoad(String road) {
 
         String flux = String.format( "from(bucket:\"%s\") |> range(start:0) |> filter(fn: (r) => r[\"_measurement\"] == \"traffic\") |> filter(fn: (r) => r[\"road\"] == \"%s\") |> sort() |> yield(name: \"sort\")", bucket, road);

@@ -1,6 +1,8 @@
 version: "2"
 services:
   influxdb:
+    networks:
+      - server_client
     image: influxdb:2.0
     ports:
       - "8086:8086"
@@ -13,6 +15,8 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=unlp
   
   grafana:
+    networks:
+      - server_client
     image: grafana/grafana
     ports:
       - "3000:3000"
@@ -21,3 +25,6 @@ services:
     links:
       - influxdb
     restart: always
+
+networks:
+  server_client:

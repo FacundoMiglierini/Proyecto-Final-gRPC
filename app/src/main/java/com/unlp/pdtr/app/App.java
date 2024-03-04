@@ -3,6 +3,10 @@ package com.unlp.pdtr.app;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
+//TODO
+//env for API token
+//InfluxDB not supporting clustering
+
 public class App 
 {
     public static void main( String[] args ) throws Exception

@@ -101,14 +101,14 @@ public class UserServiceImpl extends UserServiceImplBase
                     .setRoad(request.getRoad())
                     .setRegion(request.getRegion())
                     .setTime(request.getTime())
-                    .setComment(request.getComment())
+                    .setMeasure(request.getMeasure())
                     .build();
 
                 webSocketRequest = WebSocketRequest.newBuilder()
                     .setRoad(request.getRoad())
                     .setRegion(request.getRegion())
                     .setTime(request.getTime())
-                    .setComment(request.getComment())
+                    .setMeasure(request.getMeasure())
                     .build();
 
                 databaseRequestObserver.onNext(databaseRequest);

@@ -8,7 +8,8 @@ message DBRequest {
     string road = 1;
     string region = 2;
     google.protobuf.Timestamp time = 3;
-    string comment = 4;
+    string measure = 4;
+    uint32 value = 5;
 }
 
 message DBResponse {

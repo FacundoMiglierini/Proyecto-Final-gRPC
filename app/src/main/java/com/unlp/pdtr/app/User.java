@@ -110,7 +110,6 @@ public class User {
                     // Shutdown the channel after the call is complete
                     channel.shutdown();
 
-                    System.out.println();
                     System.out.println("Bot stopped.");
                 } catch (Exception e) {
                     System.err.println(e.getMessage());

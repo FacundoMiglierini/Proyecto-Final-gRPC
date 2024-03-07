@@ -69,4 +69,7 @@ services:
         condition: on-failure
     environment:
       - CRATE_HEAP_SIZE=1g
-
+  grafana:
+    image: "grafana/grafana"
+    ports:
+      - "3000:3000"

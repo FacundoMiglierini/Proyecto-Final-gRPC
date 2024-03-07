@@ -18,9 +18,6 @@ public class Database {
     public Database() {
         connection = null;
         try {
-            // Register PostgreSQL JDBC driver
-            //Class.forName("org.postgresql.Driver");
-
             Properties prop = new Properties();
             try (FileInputStream input = new FileInputStream("config.properties")) {
                 prop.load(input);

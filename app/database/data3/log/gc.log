@@ -602,3 +602,10 @@
 [2024-03-07T17:27:05.980+0000][1][safepoint   ] Safepoint "Cleanup", Time since last: 4000662410 ns, Reaching safepoint: 49954 ns, Cleanup: 15048 ns, At safepoint: 5631 ns, Total: 70633 ns
 [2024-03-07T17:27:30.024+0000][1][safepoint   ] Safepoint "Cleanup", Time since last: 24043931728 ns, Reaching safepoint: 56055 ns, Cleanup: 11171 ns, At safepoint: 4649 ns, Total: 71875 ns
 [2024-03-07T17:27:52.030+0000][1][safepoint   ] Safepoint "Cleanup", Time since last: 22006042266 ns, Reaching safepoint: 52849 ns, Cleanup: 10771 ns, At safepoint: 5700 ns, Total: 69320 ns
+[2024-03-07T17:28:34.077+0000][1][safepoint   ] Safepoint "Cleanup", Time since last: 42046982689 ns, Reaching safepoint: 41218 ns, Cleanup: 10950 ns, At safepoint: 3607 ns, Total: 55775 ns
+[2024-03-07T17:28:40.870+0000][1][safepoint   ] Safepoint "Cleanup", Time since last: 6792410853 ns, Reaching safepoint: 10300 ns, Cleanup: 52438 ns, At safepoint: 2976 ns, Total: 65714 ns
+[2024-03-07T17:28:40.911+0000][1][gc,heap,exit] Heap
+[2024-03-07T17:28:40.911+0000][1][gc,heap,exit]  garbage-first heap   total 1048576K, used 532927K [0x00000000c0000000, 0x0000000100000000)
+[2024-03-07T17:28:40.911+0000][1][gc,heap,exit]   region size 1024K, 511 young (523264K), 11 survivors (11264K)
+[2024-03-07T17:28:40.911+0000][1][gc,heap,exit]  Metaspace       used 87946K, committed 89472K, reserved 1179648K
+[2024-03-07T17:28:40.911+0000][1][gc,heap,exit]   class space    used 11450K, committed 12160K, reserved 1048576K

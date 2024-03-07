@@ -4,8 +4,8 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 //TODO
-//env for API token
-//Choose a new distributed, timeseries DB
+// conflicts with many bots
+// slow writing process on db
 
 public class App 
 {

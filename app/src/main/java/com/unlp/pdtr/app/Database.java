@@ -22,8 +22,6 @@ public class Database {
             try (FileInputStream input = new FileInputStream("config.properties")) {
                 prop.load(input);
                 String url = prop.getProperty("db.url");
-                // Establish connection
-                //String url = "crate://localhost,192.168.0.53:5432/";
                 Properties connectionProps = new Properties();
                 connectionProps.put("user", "crate");
                 connectionProps.put("password", "");
@@ -42,10 +40,6 @@ public class Database {
                 System.out.println(showTablesResult.getString(1));
             }
             */
-
-        //} catch (ClassNotFoundException e) {
-          //  System.out.println("PostgreSQL JDBC driver not found!");
-          //  e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Connection failed! Check console for errors.");
             e.printStackTrace();
@@ -67,10 +61,9 @@ public class Database {
     public void writeData(String road, String region, String measure, int value, Instant time) {
 
         if (connection != null) {
-            // inserting values into the newtable
             PreparedStatement preparedStatement;
             String sql = "INSERT INTO timeseries (measure, road, region, time, value) VALUES (?, ?, ?, ?, ?)";
-            Timestamp timestamp = Timestamp.from(time.atZone(ZoneId.of("UTC")).toInstant());
+            Timestamp timestamp = Timestamp.from(time);
             String timestampString = timestamp.toString();
             try {
                 preparedStatement = connection.prepareStatement(sql);
@@ -83,6 +76,7 @@ public class Database {
                 preparedStatement.setInt(5, value);
                 System.out.println(preparedStatement.toString());
                 preparedStatement.executeUpdate();
+                preparedStatement.close();
             } catch (SQLException sqlException) {
                 System.out.println("Data writing failed! Check console for errors.");
                 sqlException.printStackTrace();

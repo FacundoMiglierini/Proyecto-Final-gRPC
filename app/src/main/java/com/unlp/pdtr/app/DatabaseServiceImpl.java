@@ -1,6 +1,8 @@
 package com.unlp.pdtr.app;
 
 import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import io.grpc.stub.StreamObserver;
 import com.google.protobuf.Empty;
 import com.unlp.pdtr.app.DatabaseServiceGrpc.DatabaseServiceImplBase;
@@ -9,9 +11,11 @@ import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBRequest;
 public class DatabaseServiceImpl extends DatabaseServiceImplBase
 {
     private static Database database;
+    private static ExecutorService executor; 
 
     public DatabaseServiceImpl() {
         database = new Database();
+        executor = Executors.newFixedThreadPool(30);
     }
 
     @Override
@@ -20,7 +24,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
             @Override
             public void onNext(DBRequest request) {
                 Instant time = Instant.ofEpochSecond(request.getTime().getSeconds(), request.getTime().getNanos());
-                database.writeData(request.getRoad(), request.getRegion(), request.getMeasure(), request.getValue(), time);
+                executor.submit(() -> database.writeData(request.getRoad(), request.getRegion(), request.getMeasure(), request.getValue(), time));
             }
 
             @Override

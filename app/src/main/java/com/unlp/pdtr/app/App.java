@@ -5,7 +5,7 @@ import io.grpc.ServerBuilder;
 
 //TODO
 //env for API token
-//InfluxDB not supporting clustering
+//Choose a new distributed, timeseries DB
 
 public class App 
 {

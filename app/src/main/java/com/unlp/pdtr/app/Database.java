@@ -6,10 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.Properties;
-import java.sql.ResultSet;
 import java.time.ZoneId;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Database {
 
@@ -19,15 +19,22 @@ public class Database {
         connection = null;
         try {
             // Register PostgreSQL JDBC driver
-            Class.forName("org.postgresql.Driver");
+            //Class.forName("org.postgresql.Driver");
 
-            // Establish connection
-            String url = "crate://localhost,192.168.0.53:5432/";
-            Properties connectionProps = new Properties();
-            connectionProps.put("user", "crate");
-            connectionProps.put("password", "");
-            connectionProps.put("ssl", false);
-            connection = DriverManager.getConnection(url, connectionProps);
+            Properties prop = new Properties();
+            try (FileInputStream input = new FileInputStream("config.properties")) {
+                prop.load(input);
+                String url = prop.getProperty("db.url");
+                // Establish connection
+                //String url = "crate://localhost,192.168.0.53:5432/";
+                Properties connectionProps = new Properties();
+                connectionProps.put("user", "crate");
+                connectionProps.put("password", "");
+                connectionProps.put("ssl", false);
+                connection = DriverManager.getConnection(url, connectionProps);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
 
             /*
             // create a statement for our connection
@@ -39,9 +46,9 @@ public class Database {
             }
             */
 
-        } catch (ClassNotFoundException e) {
-            System.out.println("PostgreSQL JDBC driver not found!");
-            e.printStackTrace();
+        //} catch (ClassNotFoundException e) {
+          //  System.out.println("PostgreSQL JDBC driver not found!");
+          //  e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Connection failed! Check console for errors.");
             e.printStackTrace();

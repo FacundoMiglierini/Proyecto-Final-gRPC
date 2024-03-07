@@ -1,30 +1,75 @@
-version: "2"
+version: '3.8'
 services:
-  influxdb:
-    networks:
-      - server_client
-    image: influxdb:2.0
+  cratedb01:
+    image: crate:latest
+    volumes:
+      - "./database/data1:/data"
     ports:
-      - "8086:8086"
-    restart: always
+      - "4200:4200"
+      - "4300:4300"
+      - "5432:5432"
+    command: ["crate",
+                  "-Ccluster.name=crate-docker-cluster",
+                  "-Cnode.name=cratedb01",
+                  "-Cnode.data=true",
+                  "-Cnetwork.host=_site_",
+                  "-Cdiscovery.seed_hosts=cratedb02,cratedb03",
+                  "-Ccluster.initial_master_nodes=cratedb01,cratedb02,cratedb03",
+                  "-Cgateway.expected_data_nodes=3",
+                  "-Cgateway.recover_after_data_nodes=2"]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_BUCKET=traffic-bucket
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=distribuidos
-      - DOCKER_INFLUXDB_INIT_ORG=unlp
-  
+      - CRATE_HEAP_SIZE=1g
+  cratedb02:
+    image: crate:latest
+    volumes:
+      - "./database/data2:/data"
+    ports:
+      - "4201:4200"
+      - "4301:4300"
+      - "5433:5432"
+    command: ["crate",
+                  "-Ccluster.name=crate-docker-cluster",
+                  "-Cnode.name=cratedb02",
+                  "-Cnode.data=true",
+                  "-Cnetwork.host=_site_",
+                  "-Cdiscovery.seed_hosts=cratedb01,cratedb03",
+                  "-Ccluster.initial_master_nodes=cratedb01,cratedb02,cratedb03",
+                  "-Cgateway.expected_data_nodes=3",
+                  "-Cgateway.recover_after_data_nodes=2"]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - CRATE_HEAP_SIZE=1g
+  cratedb03:
+    image: crate:latest
+    volumes:
+      - "./database/data3:/data"
+    ports:
+      - "4202:4200"
+      - "4302:4300"
+      - "5434:5432"
+    command: ["crate",
+                  "-Ccluster.name=crate-docker-cluster",
+                  "-Cnode.name=cratedb03",
+                  "-Cnode.data=true",
+                  "-Cnetwork.host=_site_",
+                  "-Cdiscovery.seed_hosts=cratedb01,cratedb02",
+                  "-Ccluster.initial_master_nodes=cratedb01,cratedb02,cratedb03",
+                  "-Cgateway.expected_data_nodes=3",
+                  "-Cgateway.recover_after_data_nodes=2"]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - CRATE_HEAP_SIZE=1g
   grafana:
-    networks:
-      - server_client
-    image: grafana/grafana
+    image: "grafana/grafana"
     ports:
       - "3000:3000"
-    depends_on:
-      - influxdb
-    links:
-      - influxdb
-    restart: always
-
-networks:
-  server_client:

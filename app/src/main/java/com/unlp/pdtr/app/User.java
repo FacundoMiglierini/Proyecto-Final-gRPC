@@ -1,6 +1,7 @@
 package com.unlp.pdtr.app;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.List;
 import java.util.Map;
@@ -77,9 +78,11 @@ public class User {
                 UserRequest request;
 
                 Instant currentTimestamp = Instant.now();
+                // format to UTC
+                Instant UTCTimestamp = currentTimestamp.plus(3, ChronoUnit.HOURS);
                 Timestamp currentTime = Timestamp.newBuilder()
-                        .setSeconds(currentTimestamp.getEpochSecond())
-                        .setNanos(currentTimestamp.getNano())
+                        .setSeconds(UTCTimestamp.getEpochSecond())
+                        .setNanos(UTCTimestamp.getNano())
                         .build();
 
                 request = UserRequest.newBuilder()

@@ -126,10 +126,34 @@ public class User {
         String[] rp1 = {"Partido de La Plata: Tolosa", "Ringuelet", "City Bell"};
         String[] rp2 = {"Avellaneda", "Chascomús", "Lezama"};
         String[] rp4 = {"Quilmes", "Florencio Varela"};
+        String[] rp6 = {"Ángel Etcheverry", "Luján", "Zárate"};
+        String[] rp7 = {"Morón", "Merlo", "Moreno"};
+        String[] rp8 = {"San Martín", "Tres de Febrero", "San Miguel"};
+        String[] rp9 = {"Tigre"};
+        String[] rp11 = {"Magdalena", "Mar del Plata", "Punta Lara"};
+        String[] rp15 = {"Ensenada", "Berisso"};
+        String[] rp18 = {"Hudson", "Berazategui", "Quilmes", "Ezpeleta"};
+        String[] rp20 = {"Partido de Punta Indio", "Magdalena", "San Miguel del Monte", "Roque Pérez"};
+        String[] rp23 = {"Partido de San Fernando", "Los Polvorines", "Moreno"};
+        String[] rp30 = {"Lobería", "Tandil", "Rauch", "Ayacucho", "Las Flores", "Norberto de la Riestra"};
+        String[] rp36 = {"Avellaneda", "Sarandí", "Villa Domínico", "Los Hornos", "Verónica"};
+        String[] rp50 = {"Colón", "Ferré", "Tapalqué", "Cacharí", "Coronel Vidal"};
 
         Bot.roads.put("RP1", rp1);
         Bot.roads.put("RP2", rp2);
         Bot.roads.put("RP4", rp4);
+        Bot.roads.put("RP6", rp6);
+        Bot.roads.put("RP7", rp7);
+        Bot.roads.put("RP8", rp8);
+        Bot.roads.put("RP9", rp9);
+        Bot.roads.put("RP11", rp11);
+        Bot.roads.put("RP15", rp15);
+        Bot.roads.put("RP18", rp18);
+        Bot.roads.put("RP20", rp20);
+        Bot.roads.put("RP23", rp23);
+        Bot.roads.put("RP30", rp30);
+        Bot.roads.put("RP36", rp36);
+        Bot.roads.put("RP50", rp50);
 
         int[] speed = {60, 130};
         int[] cars = {10, 200};

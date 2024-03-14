@@ -1,7 +1,7 @@
 server:
 	mvn -DskipTests package exec:java  -Dexec.mainClass=com.unlp.pdtr.app.App
 client:
-	mvn -DskipTests package exec:java  -Dexec.mainClass=com.unlp.pdtr.app.User -Dexec.cleanupDaemonThreads=false
+	mvn -DskipTests package exec:java  -Dexec.mainClass=com.unlp.pdtr.app.User -Dexec.cleanupDaemonThreads=false -Dexec.args="$(bots)"
 #inciso_a_sv:
 #	mvn -DskipTests package exec:java  -Dexec.mainClass=pdytr.example.grpc.App -Dexec.args="A_SV"
 #	mvn -DskipTests package exec:java  -Dexec.mainClass=pdytr.example.grpc.Client -Dexec.args="A_SV" -Dexec.cleanupDaemonThreads=false || true

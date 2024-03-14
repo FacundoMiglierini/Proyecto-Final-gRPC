@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  frontend:
+    platform: linux/amd64
+    build:
+      dockerfile: Dockerfile.local
+      context: frontend
+    ports:
+      - 5000:5000
+    links:
+      - influxdb
+    networks:
+      - server_client
+    volumes:
+      - ./frontend/:/opt/app/
+
+  backend:
+    platform: linux/amd64
+    build:
+      dockerfile: Dockerfile.local
+      context: app
+    ports:
+      - 8080:8080
+    links:
+      - influxdb
+    networks:
+      - server_client
+    volumes:
+      - ./app/:/opt/app/
+
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - '8086:8086'
+    restart: unless-stopped
+    networks:
+      - server_client
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000'
+    links:
+      - influxdb
+    restart: unless-stopped
+    networks:
+      - server_client
+
+  telegraf:
+    image: telegraf:1.16
+    links:
+      - influxdb
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+    restart: unless-stopped
+    networks:
+      - server_client
+networks:
+  server_client:

@@ -5,10 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import { Map, MapStyle, Marker, config } from '@maptiler/sdk'
+import { Map, MapStyle, Marker, Popup, config, type MapOptions } from '@maptiler/sdk'
 import { shallowRef, onMounted, onUnmounted, markRaw } from 'vue'
 import '@maptiler/sdk/dist/maptiler-sdk.css'
 import rutas from '../public/rutas_provinciales_bsas.json'
+import departamentos from '../public/departamentos_bsas.json'
 //import localidades from '../public/localidades_bsas.json'
 type Localidad = {
   id: string
@@ -43,7 +44,7 @@ const map = shallowRef<Map>()
 onMounted(async () => {
   config.apiKey = 'Wl3umxiiNruPIDlZmf3v'
 
-  const initialState = { lat: -37.255, lng: -60.390, zoom: 6 }
+  const initialState = { lat: -37.255, lng: -60.39, zoom: 6 }
 
   map.value = markRaw(
     new Map({
@@ -51,6 +52,7 @@ onMounted(async () => {
       style: MapStyle.STREETS,
       center: [initialState.lng, initialState.lat],
       zoom: initialState.zoom,
+      
     }),
   )
 
@@ -59,20 +61,45 @@ onMounted(async () => {
     .addTo(map.value)
   map.value.on('load', () => {
     if (map.value == undefined) return
-    map.value.addSource('red_vial_ign_ont_a_prov_view', {
+    map.value.addSource('departamentos_bsas', {
+      type: 'geojson',
+      data: departamentos,
+    })
+    map.value.addLayer({
+      id: 'departamentos_bsas',
+      type: 'fill',
+      source: 'departamentos_bsas',
+      layout: {},
+      paint: { 
+        'fill-color': "#088",
+        'fill-opacity': 0.1,
+        'fill-outline-color': "#0ff"
+      },
+    })
+
+    map.value.on('click', 'departamentos_bsas', (e) => {
+      if (e.features == undefined) return
+      new Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(e.features[0].properties.nombre)
+        .addTo(map.value!!)
+    })
+
+    map.value.addSource('rutas_provinciales_bsas', {
       type: 'geojson',
       data: rutas,
     })
     map.value.addLayer({
-      id: 'grand_teton',
+      id: 'rutas_provinciales_bsas',
       type: 'line',
-      source: 'red_vial_ign_ont_a_prov_view',
+      source: 'rutas_provinciales_bsas',
       layout: {},
-      paint: {
-        'line-color': '#118',
+      paint: { // orange primary color
+        'line-color': '#a33',
         'line-width': 1,
       },
     })
+
     //const markers = [] as Marker[]
     //localidades.forEach((localidad: Localidad) => {
     //  const m = new Marker({ color: '#ff0000', scale: 0.5 })
@@ -85,7 +112,6 @@ onMounted(async () => {
     //    m.remove()
     //  })
     //}, 5000)
-
   })
 }),
   onUnmounted(() => {

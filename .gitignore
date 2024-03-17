@@ -1,3 +1,4 @@
 app/target/
 app/database/*
 app/config.properties
+datasets/libs

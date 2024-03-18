@@ -58,11 +58,11 @@ public class Database {
     }
 
 
-    public void writeData(String road, String region, String measure, int value, Instant time) {
+    public void writeData(double lat, double lon, String measure, int value, Instant time) {
 
         if (connection != null) {
             PreparedStatement preparedStatement;
-            String sql = "INSERT INTO timeseries (measure, road, region, time, value) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO timeseries (measure, lat, long, time, value) VALUES (?, ?, ?, ?, ?)";
             Timestamp timestamp = Timestamp.from(time);
             String timestampString = timestamp.toString();
             try {
@@ -70,8 +70,8 @@ public class Database {
 
                 // Set values for the parameters
                 preparedStatement.setString(1, measure);
-                preparedStatement.setString(2, road);
-                preparedStatement.setString(3, region );
+                preparedStatement.setDouble(2, lat);
+                preparedStatement.setDouble(3, lon);
                 preparedStatement.setString(4, timestampString);
                 preparedStatement.setInt(5, value);
                 System.out.println(preparedStatement.toString());

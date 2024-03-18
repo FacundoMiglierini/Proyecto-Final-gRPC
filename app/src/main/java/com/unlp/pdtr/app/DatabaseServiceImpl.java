@@ -24,7 +24,7 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
             @Override
             public void onNext(DBRequest request) {
                 Instant time = Instant.ofEpochSecond(request.getTime().getSeconds(), request.getTime().getNanos());
-                executor.submit(() -> database.writeData(request.getRoad(), request.getRegion(), request.getMeasure(), request.getValue(), time));
+                executor.submit(() -> database.writeData(request.getLat(), request.getLong(), request.getMeasure(), request.getValue(), time));
             }
 
             @Override

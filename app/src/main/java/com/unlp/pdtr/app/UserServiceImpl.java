@@ -92,16 +92,16 @@ public class UserServiceImpl extends UserServiceImplBase
                 StreamObserver<WebSocketRequest> webSocketRequestObserver = webSocketStub.showContent(webSocketResponseObserver);
 
                 databaseRequest = DBRequest.newBuilder()
-                    .setRoad(request.getRoad())
-                    .setRegion(request.getRegion())
+                    .setLat(request.getLat())
+                    .setLong(request.getLong())
                     .setTime(request.getTime())
                     .setMeasure(request.getMeasure())
                     .setValue(request.getValue())
                     .build();
 
                 webSocketRequest = WebSocketRequest.newBuilder()
-                    .setRoad(request.getRoad())
-                    .setRegion(request.getRegion())
+                    .setLat(request.getLat())
+                    .setLong(request.getLong())
                     .setTime(request.getTime())
                     .setMeasure(request.getMeasure())
                     .setValue(request.getValue())

@@ -6,8 +6,8 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message DBRequest {
-    string road = 1;
-    string region = 2;
+    double lat = 1;
+    double long = 2;
     google.protobuf.Timestamp time = 3;
     string measure = 4;
     uint32 value = 5;

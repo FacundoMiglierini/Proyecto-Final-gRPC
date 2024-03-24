@@ -4,6 +4,9 @@ https://ide.transporte.gob.ar/geoserver/observ/ows?service=WFS&version=1.0.0&req
 # localidades
 https://infra.datos.gob.ar/georef/localidades.json
 
+# unidades territoriales
+https://datos.gob.ar/dataset/jgm-servicio-normalizacion-direcciones-unidades-territoriales-argentina
+
 # apis utiles del gob
 https://datosgobar.github.io/georef-ar-api/
 

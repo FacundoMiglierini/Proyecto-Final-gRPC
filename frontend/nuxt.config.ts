@@ -10,7 +10,8 @@ export default defineNuxtConfig({
         config.plugins.push(vuetify({ autoImport: true }))
       })
     },
-    'nuxt-socket-io'
+    'nuxt-socket-io',
+    '@pinia/nuxt'
   ],
   // setup socketio socket
   io: {
@@ -41,4 +42,8 @@ export default defineNuxtConfig({
   devServer: {
     port: 5000,
   },
+  imports: {
+    dirs: ['interfaces/*.ts'],
+  },
+  css: ['~/assets/css/popup.css'],
 })

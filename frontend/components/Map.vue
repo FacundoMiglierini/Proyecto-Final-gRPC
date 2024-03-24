@@ -57,6 +57,7 @@ import '@maptiler/sdk/dist/maptiler-sdk.css'
 import rutas from '../public/rutas_provinciales_bsas.json'
 import departamentos from '../public/departamentos_bsas.json'
 import { storeToRefs } from 'pinia'
+import type { Measure } from '~/interfaces/measures'
 
 const props = defineProps<{
   store: any

@@ -11,6 +11,7 @@ export default defineNuxtConfig({
       })
     },
     'nuxt-socket-io',
+    'nuxt-highcharts',
     '@pinia/nuxt'
   ],
   // setup socketio socket
@@ -43,7 +44,7 @@ export default defineNuxtConfig({
     port: 5000,
   },
   imports: {
-    dirs: ['interfaces/*.ts'],
+    dirs: ['~/interfaces/*.ts'],
   },
   css: ['~/assets/css/popup.css'],
 })

@@ -43,20 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Map,
-  MapStyle,
-  Marker,
-  Popup,
-  config,
-  type MapOptions,
-  type Offset,
-} from '@maptiler/sdk'
+import { Map, MapStyle, Marker, Popup, config } from '@maptiler/sdk'
 import { shallowRef, onMounted, onUnmounted, markRaw } from 'vue'
 import '@maptiler/sdk/dist/maptiler-sdk.css'
 import rutas from '../public/rutas_provinciales_bsas.json'
 import departamentos from '../public/departamentos_bsas.json'
-import { storeToRefs } from 'pinia'
+import { getHTMLDepartment, getHTMLPopup } from './popups'
 
 const props = defineProps<{
   store: any
@@ -64,7 +56,7 @@ const props = defineProps<{
 
 const toggle_exclusive = ref(0)
 const velocity = ref('5')
-const show_stats = ref('hide')
+const show_stats = ref('show')
 
 const mapContainer = shallowRef<string>()
 const map = shallowRef<Map>()
@@ -73,6 +65,7 @@ let markers = [] as Marker[]
 onMounted(async () => {
   config.apiKey = 'Wl3umxiiNruPIDlZmf3v'
 
+  // center of Buenos Aires
   const initialState = { lat: -37.255, lng: -60.39, zoom: 6 }
 
   map.value = markRaw(
@@ -84,6 +77,7 @@ onMounted(async () => {
     }),
   )
 
+  // adds polygons of departments of Buenos Aires
   map.value.on('load', () => {
     if (map.value == undefined) return
     map.value.addSource('departamentos_bsas', {
@@ -102,6 +96,7 @@ onMounted(async () => {
       },
     })
 
+    // adds lines of Buenos Aires' provincial routes
     map.value.addSource('rutas_provinciales_bsas', {
       type: 'geojson',
       data: rutas,
@@ -112,19 +107,23 @@ onMounted(async () => {
       source: 'rutas_provinciales_bsas',
       layout: {},
       paint: {
-        // orange primary color
         'line-color': '#a33',
         'line-width': 1,
       },
     })
 
+    // sets click event for departments
     map.value.on('click', 'departamentos_bsas', (e) => {
       if (e.features == undefined || toggle_exclusive.value === 0) return
       let p = new Popup()
         .setLngLat(e.lngLat)
         .setHTML('<p style="color:white; background:black">Cargando...</p>')
         .addTo(map.value!!)
-      getHTMLDepartment(e.features[0].properties).then((popupHTML) => {
+      getHTMLDepartment(
+        props.store,
+        show_stats.value,
+        e.features[0].properties,
+      ).then((popupHTML) => {
         p.remove()
         new Popup()
           .setLngLat(e.lngLat)
@@ -133,9 +132,10 @@ onMounted(async () => {
       })
     })
 
+    // listen for new measures to update the map with markers
     props.store.$subscribe((data: any) => {
       if (data.type == 'patch function' && toggle_exclusive.value === 0) {
-        const measure = data.events[0].newValue
+        const measure = data?.events[0]?.newValue
         //@ts-ignore
         const p = new Popup()
           .setDOMContent(getHTMLPopup(measure))
@@ -156,199 +156,15 @@ onMounted(async () => {
       }
     })
   })
-}),
-  onUnmounted(() => {
-    map.value?.remove()
-  })
+})
 
-const getHTMLPopup = (measure: Measure): HTMLDivElement => {
-  let date = new Date(measure.time_.seconds_ * 1000 - 3 * 60 * 60 * 1000)
-
-  const popup = document.createElement('div')
-  popup.classList.add('popup')
-  popup.style.setProperty('width', `200px`)
-  popup.style.setProperty('height', `100px`)
-
-  let windDiv = `
-    <div
-      class="popupWind"
-    >
-      ${date.toLocaleDateString('es-AR')} | ${date.toLocaleTimeString('es-AR')}
-    </div>
-    `
-
-  let precipDiv = `
-    <div
-      class="popupPrecipitation"
-    >
-      lat/lon: ${measure.lat_.toFixed(2)}/${measure.long_.toFixed(2)}
-    </div>
-    `
-  let html = `
-    <div>
-        <div class="popupBody">
-          <div class="popupTop">
-            ${mapMeasureTitle(measure.measure_)}
-          </div>
-
-          <div class="popupBottom">
-
-            <div class="popupBottomLeft">
-              <div class="popupTemperature">${measure.value_}</div>
-              ${windDiv}
-            </div>
-
-            <div class="popupBottomRight">
-              <img class="popupMainWeatherIcon" src="${getImg(measure.measure_)}" alt="MapTiler logo" />
-              ${precipDiv}
-            </div>
-
-          </div>
-        </div>
-    </div>
-  `
-
-  popup.innerHTML = html
-  return popup
-}
-
-const getImg = (measure: string) => {
-  switch (measure) {
-    case 'speed':
-      return 'https://www.svgrepo.com/show/458910/speed-alt.svg'
-    case 'parked':
-      return 'https://www.svgrepo.com/show/105016/parked-car.svg'
-    case 'accidents':
-      return 'https://www.svgrepo.com/show/334499/car-crash.svg'
-    case 'cars':
-      return 'https://www.svgrepo.com/show/25407/car.svg'
-    case 'trucks':
-      return 'https://www.svgrepo.com/show/481035/truck.svg'
-    default:
-      return 'https://www.svgrepo.com/show/25407/car.svg'
-  }
-}
-
-const getHTMLDepartment = async (properties: any): Promise<HTMLDivElement> => {
-  const popup = document.createElement('div')
-  popup.classList.add('popup')
-  popup.style.setProperty('width', `200px`)
-  popup.style.setProperty('height', `100px`)
-  let bottomBody = ''
-  if (show_stats.value === 'show') {
-    let total = {} as any
-    let count = {} as any
-    const { measures } = storeToRefs(props.store)
-    for (let measure of measures.value) {
-      // https://apis.datos.gob.ar/georef/api/ubicacion?lat=-27.2741&lon=-66.7529
-      const res = await fetch(
-        `https://apis.datos.gob.ar/georef/api/ubicacion?lat=${measure.lat_}&lon=${measure.long_}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      ).then((res) => res.json())
-      if (res.ubicacion.departamento.id === properties.id) {
-        console.log('measure', measure)
-        if (!total[measure.measure_]) {
-          total[measure.measure_] = 0
-          count[measure.measure_] = 0
-        }
-        total[measure.measure_] += measure.value_
-        count[measure.measure_] += 1
-      }
-    }
-
-    let veloc = ''
-    if (total.speed !== undefined) {
-      veloc = `<p>Velocidad: ${total.speed / count.speed}km/h</p>`
-    }
-    let parked = ''
-    if (total.parked !== undefined) {
-      parked = `<p>Nro. Estacionados: ${total.parked / count.parked}</p>`
-    }
-    let accidents = ''
-    if (total.accidents !== undefined) {
-      accidents = `<p>Nro. Accidentes: ${total.accidents / count.accidents}</p>`
-    }
-    let cars = ''
-    if (total.cars !== undefined) {
-      cars = `<p>Nro. Autos: ${total.cars / count.cars}</p>`
-    }
-    let trucks = ''
-    if (total.trucks !== undefined) {
-      trucks = `<p>Nro. Camiones: ${total.trucks / count.trucks}</p>`
-    }
-
-    let measuresDiv = '<p>No hay mediciones para este departamento</p>'
-    if (
-      veloc !== '' ||
-      parked !== '' ||
-      accidents !== '' ||
-      cars !== '' ||
-      trucks !== ''
-    ) {
-      measuresDiv = `<p>Mediciones en promedio:</p>`
-    }
-    bottomBody = `
-          <div>
-            ${measuresDiv}
-            ${veloc}
-            ${parked}
-            ${accidents}
-            ${cars}
-            ${trucks}
-          </div>
-    `
-  } else {
-    let centroide = JSON.parse(properties.centroide)
-    let provincia = properties.provincia ? JSON.parse(properties.provincia).nombre : 'Buenos Aires'
-    bottomBody = `
-          <div>
-            <p><strong>Centroide (lat/lon):</strong> ${centroide.lat.toFixed(2)}/${centroide.lon.toFixed(2)}</p>
-            <p><strong>Nombre completo:</strong> ${properties.nombre_completo}</p>
-            <p><strong> Categoria:</strong> ${properties.categoria}</p>
-            <p><strong> Provincia:</strong> ${provincia}</p>
-          </div>
-    `
-  }
-  let html = `
-    <div>
-        <div class="popupBody">
-          <div class="popupTop">
-            ${properties.nombre}
-          </div>
-          ${bottomBody}
-        </div>
-    </div>
-  `
-
-  popup.innerHTML = html
-  return popup
-}
+onUnmounted(() => {
+  map.value?.remove()
+})
 
 const clearMarkers = () => {
   markers.forEach((marker) => marker.remove())
   markers = []
-}
-
-const mapMeasureTitle = (measure: string) => {
-  switch (measure) {
-    case 'speed':
-      return 'Velocidad'
-    case 'parked':
-      return 'Nro. Estacionados'
-    case 'accidents':
-      return 'Nro. Accidentes'
-    case 'cars':
-      return 'Nro. Autos'
-    case 'trucks':
-      return 'Nro. Camiones'
-    default:
-      return measure
-  }
 }
 </script>
 

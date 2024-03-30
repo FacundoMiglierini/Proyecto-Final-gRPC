@@ -34,6 +34,9 @@ export default defineNuxtConfig({
     enabled: true,
   },
   app: {
+    head: {
+      title: 'Realtime Map'
+    },
     pageTransition: {
       name: 'page',
       mode: 'out-in',

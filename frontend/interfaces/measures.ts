@@ -1,6 +1,7 @@
 export interface Measure {
   lat_: number
   long_: number
+  deparment_: string
   time_: {
     seconds_: number
     nanos_: number

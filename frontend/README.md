@@ -1,75 +1,25 @@
-# Nuxt 3 Minimal Starter
+# Real-Time Events Visualization
+This repository contains a real-time events visualization application built using Nuxt.js 3, Pinia for state management, WebSocket with Socket.io for real-time communication, and TypeScript for implementing maps and visualizations of these events.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Features
 
-## Setup
+- Real-Time Visualization: The application provides real-time visualization of events on maps.
+- Interactive Interface: Users can interact with the maps and explore events in real time.
+- State Management with Pinia: Pinia is used for efficient state management within the application.
+- WebSocket with Socket.io: WebSocket with Socket.io ensures real-time communication between the client and server.
+- TypeScript: TypeScript is used for implementing maps and other visualizations, providing type safety and better code maintainability.
 
-Make sure to install the dependencies:
+## Prerequisites
+
+Before running the application, ensure you have the following installed:
+- node.js (version >= 18.x)
+- npm
+
+## Usage
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+![Map of Buenos Aires with events](./public/readme.png)

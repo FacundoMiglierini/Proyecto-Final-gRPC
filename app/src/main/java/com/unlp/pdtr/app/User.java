@@ -91,6 +91,7 @@ public class User {
                 request = UserRequest.newBuilder()
                     .setLat(coordinates.getLat())
                     .setLong(coordinates.getLong())
+                    .setDepartment(coordinates.getDepartment())
                     .setTime(currentTime)
                     .setMeasure(measure)
                     .setValue(value)
@@ -128,7 +129,7 @@ public class User {
     static {
 
         try {
-            String json = new String(Files.readAllBytes(Paths.get("../datasets/puntos-con-flatten.json")));
+            String json = new String(Files.readAllBytes(Paths.get("../datasets/puntos-con-flatten-dptos.json")));
             // Define the type of the list elements
             Type listType = new TypeToken<List<Coordinates>>() {}.getType();
 
@@ -157,10 +158,13 @@ public class User {
         private double lat;
         @SerializedName("long")
         private double lon;
+        @SerializedName("dpto")
+        private String department;
 
-        public Coordinates(double lat, double lon) {
+        public Coordinates(double lat, double lon, String department) {
             this.lat = lat;
             this.lon = lon;
+            this.department = department;
         }
 
 
@@ -174,9 +178,14 @@ public class User {
         }
 
 
+        public String getDepartment() {
+                return department;
+        }
+
+
         @Override 
         public String toString() {
-            return "lat: " + this.lat + " - long: " + this.lon;
+            return "lat: " + this.lat + " - long: " + this.lon + " - depto: " + this.department;
         }
 
 

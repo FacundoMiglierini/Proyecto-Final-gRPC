@@ -29,6 +29,20 @@ Before running the application, ensure you have the following installed:
 
 ## Usage
 
+Create table on CrateDB database:
+
+```sql
+CREATE TABLE timeseries (
+  "measure" STRING,
+  "lat" DOUBLE,
+  "long" DOUBLE,
+  "department" STRING,
+  "time" TIMESTAMP,
+  "value" INTEGER,
+  primary key ("measure", "lat", "long", "time")
+ );
+```
+
 Start the backend server:
 
 ```bash

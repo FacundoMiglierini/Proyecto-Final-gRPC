@@ -3,19 +3,18 @@ syntax = "proto3";
 package com.unlp.pdtr.app;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message DBRequest {
-    string road = 1;
-    string region = 2;
-    google.protobuf.Timestamp time = 3;
-    string comment = 4;
-}
-
-message DBResponse {
-    google.protobuf.Timestamp time = 1;
+    double lat = 1;
+    double long = 2;
+    string department = 3;
+    google.protobuf.Timestamp time = 4;
+    string measure = 5;
+    uint32 value = 6;
 }
 
 
 service DatabaseService {
-    rpc storeInDatabase(stream DBRequest) returns (DBResponse);
+    rpc storeInDatabase(stream DBRequest) returns (google.protobuf.Empty) {}
 }

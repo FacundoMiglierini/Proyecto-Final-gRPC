@@ -6,10 +6,12 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 message UserRequest {
-    string road = 1;
-    string region = 2;
-    google.protobuf.Timestamp time = 3;
-    string comment = 4;
+    double lat = 1;
+    double long = 2;
+    string department = 3;
+    google.protobuf.Timestamp time = 4;
+    string measure = 5;
+    uint32 value = 6;
 }
 
 

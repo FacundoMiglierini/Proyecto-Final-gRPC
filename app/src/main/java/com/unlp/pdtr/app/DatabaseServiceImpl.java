@@ -1,22 +1,30 @@
 package com.unlp.pdtr.app;
 
 import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import io.grpc.stub.StreamObserver;
-import com.google.protobuf.Timestamp;
+import com.google.protobuf.Empty;
 import com.unlp.pdtr.app.DatabaseServiceGrpc.DatabaseServiceImplBase;
 import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBRequest;
-import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBResponse;
 
 public class DatabaseServiceImpl extends DatabaseServiceImplBase
 {
+    private static Database database;
+    private static ExecutorService executor; 
+
+    public DatabaseServiceImpl() {
+        database = new Database();
+        executor = Executors.newFixedThreadPool(30);
+    }
+
     @Override
-    public StreamObserver<DBRequest> storeInDatabase(StreamObserver<DBResponse> responseObserver) {
+    public StreamObserver<DBRequest> storeInDatabase(final StreamObserver<Empty> responseObserver) {
         return new StreamObserver<DBRequest>() {
             @Override
             public void onNext(DBRequest request) {
-                //TODO store in DB
-                System.out.println("Llega a DB");
-                System.out.println(request.toString());
+                Instant time = Instant.ofEpochSecond(request.getTime().getSeconds(), request.getTime().getNanos());
+                executor.submit(() -> database.writeData(request.getLat(), request.getLong(), request.getDepartment(), request.getMeasure(), request.getValue(), time));
             }
 
             @Override
@@ -27,16 +35,8 @@ public class DatabaseServiceImpl extends DatabaseServiceImplBase
 
             @Override
             public void onCompleted() {
-                //TODO setear timestamp de ultima entrada cargada
-                Instant currentTimestamp = Instant.now();
-                Timestamp time = Timestamp.newBuilder()
-                        .setSeconds(currentTimestamp.getEpochSecond())
-                        .setNanos(currentTimestamp.getNano())
-                        .build();
-
-                DBResponse response = DBResponse.newBuilder().setTime(time).build();
-                responseObserver.onNext(response);
-                responseObserver.onCompleted();
+                database.closeDatabase();
+                responseObserver.onNext(Empty.getDefaultInstance());
                 System.out.println("STORE IN DB OPERATION FINISHED");
             }
         };

@@ -3,18 +3,18 @@ syntax = "proto3";
 package com.unlp.pdtr.app;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message WebSocketRequest {
-    string road = 1;
-    string region = 2;
-    google.protobuf.Timestamp time = 3;
-    string comment = 4;
+    double lat = 1;
+    double long = 2;
+    string department = 3;
+    google.protobuf.Timestamp time = 4;
+    string measure = 5;
+    uint32 value = 6;
 }
 
-message WebSocketResponse {
-    google.protobuf.Timestamp time = 1;
-}
 
 service WebSocketService {
-    rpc showContent(stream WebSocketRequest) returns (WebSocketResponse);
+    rpc showContent(stream WebSocketRequest) returns (google.protobuf.Empty) {}
 }

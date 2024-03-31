@@ -1,0 +1,17 @@
+# rutas
+https://ide.transporte.gob.ar/geoserver/observ/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=observ:_3.4.1.7.red_vial_ign_ont_a_prov_view&maxFeatures=22400&outputFormat=application%2Fjson
+
+# localidades
+https://infra.datos.gob.ar/georef/localidades.json
+
+# unidades territoriales
+https://datos.gob.ar/dataset/jgm-servicio-normalizacion-direcciones-unidades-territoriales-argentina
+
+# apis utiles del gob
+https://datosgobar.github.io/georef-ar-api/
+
+## getear localidad por coordenada de ruta
+https://apis.datos.gob.ar/georef/api/ubicacion?lat=-27.2741&lon=-66.7529
+
+# departamentos
+https://infra.datos.gob.ar/georef/departamentos.geojson

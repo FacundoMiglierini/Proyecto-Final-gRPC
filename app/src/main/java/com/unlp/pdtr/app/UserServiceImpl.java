@@ -9,9 +9,7 @@ import com.unlp.pdtr.app.UserServiceGrpc.UserServiceImplBase;
 import com.unlp.pdtr.app.UserServiceOuterClass.UserRequest;
 import com.unlp.pdtr.app.WebSocketServiceGrpc.WebSocketServiceStub;
 import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBRequest;
-import com.unlp.pdtr.app.DatabaseServiceOuterClass.DBResponse;
 import com.unlp.pdtr.app.WebSocketServiceOuterClass.WebSocketRequest;
-import com.unlp.pdtr.app.WebSocketServiceOuterClass.WebSocketResponse;
 
 
 public class UserServiceImpl extends UserServiceImplBase
@@ -53,13 +51,11 @@ public class UserServiceImpl extends UserServiceImplBase
                 DBRequest databaseRequest;
                 WebSocketRequest webSocketRequest;
 
-                // Create a StreamObserver to handle the response for DB Request
-                // TODO check timestamp for resending data stored in buffer
-                StreamObserver<DBResponse> databaseResponseObserver = new StreamObserver<DBResponse>() {
+                // Create a StreamObserver to handle the empty response from DB Request
+                StreamObserver<Empty> databaseResponseObserver = new StreamObserver<Empty>() {
                     @Override
-                    public void onNext(DBResponse response) {
+                    public void onNext(Empty response) {
                         // Process the empty response from the server
-                        System.out.println("MESSAGE RECEIVED FROM DATABASE");
                     }
 
                     @Override
@@ -73,12 +69,10 @@ public class UserServiceImpl extends UserServiceImplBase
                     }
                 };
 
-                // Create a StreamObserver to handle the response for WebSocket Request
-                // TODO check timestamp for resending data stored in buffer
-                StreamObserver<WebSocketResponse> webSocketResponseObserver = new StreamObserver<WebSocketResponse>() {
+                // Create a StreamObserver to handle the empty response from WebSocket Request
+                StreamObserver<Empty> webSocketResponseObserver = new StreamObserver<Empty>() {
                     @Override
-                    public void onNext(WebSocketResponse response) {
-                        System.out.println("MESSAGE RECEIVED FROM WEBSOCKET");
+                    public void onNext(Empty response) {
                         // Process the empty response from the server
                     }
 
@@ -98,25 +92,25 @@ public class UserServiceImpl extends UserServiceImplBase
                 StreamObserver<WebSocketRequest> webSocketRequestObserver = webSocketStub.showContent(webSocketResponseObserver);
 
                 databaseRequest = DBRequest.newBuilder()
-                    .setRoad(request.getRoad())
-                    .setRegion(request.getRegion())
+                    .setLat(request.getLat())
+                    .setLong(request.getLong())
+                    .setDepartment(request.getDepartment())
                     .setTime(request.getTime())
-                    .setComment(request.getComment())
+                    .setMeasure(request.getMeasure())
+                    .setValue(request.getValue())
                     .build();
 
                 webSocketRequest = WebSocketRequest.newBuilder()
-                    .setRoad(request.getRoad())
-                    .setRegion(request.getRegion())
+                    .setLat(request.getLat())
+                    .setLong(request.getLong())
+                    .setDepartment(request.getDepartment())
                     .setTime(request.getTime())
-                    .setComment(request.getComment())
+                    .setMeasure(request.getMeasure())
+                    .setValue(request.getValue())
                     .build();
 
                 databaseRequestObserver.onNext(databaseRequest);
                 webSocketRequestObserver.onNext(webSocketRequest);
-                
-                // TODO store data into a buffer
-
-                System.out.println(request.toString());
             }
 
             @Override
